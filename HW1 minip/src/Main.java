@@ -4,8 +4,8 @@ import static primitives.Util.isZero;
 import primitives.Point;
 import primitives.Vector;
 /**
- noam ben-lulu 327796850 נעם בן לולו
- menachem kishon 214938904 מנחם קישון
+ noam ben-lulu 327796850 benlulu@@yatmal.co.il
+ menachem kishon 214938904 mkishon@g.jct.ac.il
  */
 
 /** Test program for the 1st stage
