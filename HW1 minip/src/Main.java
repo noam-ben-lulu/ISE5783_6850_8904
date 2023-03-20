@@ -3,6 +3,10 @@ import static primitives.Util.isZero;
 
 import primitives.Point;
 import primitives.Vector;
+/**
+ noam ben-lulu 327796850 נעם בן לולו
+ menachem kishon 214938904 מנחם קישון
+ */
 
 /** Test program for the 1st stage
  * @author Dan Zilberstein */
