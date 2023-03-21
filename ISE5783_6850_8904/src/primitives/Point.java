@@ -69,11 +69,7 @@ public class Point {
         return sqrt(distanceSquared(point));
     }
 
-    /**
-     * Returns a string representation of the current Point object.
-     *
-     * @return A string representation of the current Point object
-     */
+
     @Override
     public String toString() {
         return "Point{" +
@@ -81,12 +77,7 @@ public class Point {
                 '}';
     }
 
-    /**
-     * Checks whether the current Point object is equal to a given object.
-     *
-     * @param o The object to compare to the current Point object
-     * @return True if the objects are equal, false otherwise
-     */
+
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;

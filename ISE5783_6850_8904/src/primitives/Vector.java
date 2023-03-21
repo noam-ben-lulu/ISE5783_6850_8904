@@ -86,11 +86,7 @@ public class Vector extends Point {
         return (this.scale((1 / this.length())));
     }
 
-    /**
-     * Returns a string representation of the Vector object, in the format "Vector{xyz=<xyz>}".
-     *
-     * @return A string representation of the Vector object.
-     */
+
     @Override
     public String toString() {
         return "Vector{" +
