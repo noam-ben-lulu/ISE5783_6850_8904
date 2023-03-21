@@ -1,0 +1,185 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="AutoImportSettings">
+    <option name="autoReloadType" value="SELECTIVE" />
+  </component>
+  <component name="ChangeListManager">
+    <list default="true" id="736c460f-a140-4edc-9f58-ac8259c9ab1a" name="Changes" comment="a">
+      <change beforePath="$PROJECT_DIR$/.idea/.gitignore" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/misc.xml" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/modules.xml" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/vcs.xml" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/ISE5783_6850_8904.iml" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/out/production/HW1 minip/Main.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/out/production/HW1 minip/geometries/Cylinder.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/out/production/HW1 minip/geometries/Geometry.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/out/production/HW1 minip/geometries/Plane.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/out/production/HW1 minip/geometries/Polygon.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/out/production/HW1 minip/geometries/RadialGeometry.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/out/production/HW1 minip/geometries/Sphere.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/out/production/HW1 minip/geometries/Triangle.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/out/production/HW1 minip/geometries/Tube.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/out/production/HW1 minip/primitives/Double3.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/out/production/HW1 minip/primitives/Point.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/out/production/HW1 minip/primitives/Ray.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/out/production/HW1 minip/primitives/Util.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/out/production/HW1 minip/primitives/Vector.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/Main.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/geometries/Cylinder.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/geometries/Geometry.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/geometries/Plane.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/geometries/Polygon.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/geometries/RadialGeometry.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/geometries/Sphere.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/geometries/Triangle.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/geometries/Tube.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/primitives/Double3.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/primitives/Point.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/primitives/Ray.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/primitives/Util.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/primitives/Vector.java" beforeDir="false" />
+    </list>
+    <option name="SHOW_DIALOG" value="false" />
+    <option name="HIGHLIGHT_CONFLICTS" value="true" />
+    <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
+    <option name="LAST_RESOLUTION" value="IGNORE" />
+  </component>
+  <component name="Git.Settings">
+    <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$/.." />
+  </component>
+  <component name="MarkdownSettingsMigration">
+    <option name="stateVersion" value="1" />
+  </component>
+  <component name="ProjectId" id="2NI3vMEYvvR4mklN69r4fegt9ZN" />
+  <component name="ProjectLevelVcsManager" settingsEditedManually="true" />
+  <component name="ProjectViewState">
+    <option name="hideEmptyMiddlePackages" value="true" />
+    <option name="showLibraryContents" value="true" />
+  </component>
+  <component name="PropertiesComponent"><![CDATA[{
+  "keyToString": {
+    "RunOnceActivity.OpenProjectViewOnStart": "true",
+    "RunOnceActivity.ShowReadmeOnStart": "true",
+    "ToolWindowGit.ShowToolbar": "false",
+    "last_opened_file_path": "C:/idea/ISE5783_6850_8904",
+    "settings.editor.selected.configurable": "advanced.settings"
+  },
+  "keyToStringList": {
+    "ChangesTree.GroupingKeys": [
+      "module",
+      "directory"
+    ]
+  }
+}]]></component>
+  <component name="RunManager">
+    <configuration name="Main" type="Application" factoryName="Application" temporary="true" nameIsGenerated="true">
+      <option name="MAIN_CLASS_NAME" value="Main" />
+      <module name="ISE5783_6850_8904" />
+      <method v="2">
+        <option name="Make" enabled="true" />
+      </method>
+    </configuration>
+    <configuration default="true" type="JetRunConfigurationType">
+      <module name="ISE5783_6850_8904" />
+      <method v="2">
+        <option name="Make" enabled="true" />
+      </method>
+    </configuration>
+    <configuration default="true" type="KotlinStandaloneScriptRunConfigurationType">
+      <module name="ISE5783_6850_8904" />
+      <option name="filePath" />
+      <method v="2">
+        <option name="Make" enabled="true" />
+      </method>
+    </configuration>
+    <recent_temporary>
+      <list>
+        <item itemvalue="Application.Main" />
+      </list>
+    </recent_temporary>
+  </component>
+  <component name="SpellCheckerSettings" RuntimeDictionaries="0" Folders="0" CustomDictionaries="0" DefaultDictionary="application-level" UseSingleDictionary="true" transferred="true" />
+  <component name="TaskManager">
+    <task active="true" id="Default" summary="Default task">
+      <changelist id="736c460f-a140-4edc-9f58-ac8259c9ab1a" name="Changes" comment="" />
+      <created>1679338000538</created>
+      <option name="number" value="Default" />
+      <option name="presentableId" value="Default" />
+      <updated>1679338000538</updated>
+    </task>
+    <task id="LOCAL‎-00001" summary="a">
+      <created>1679340672339</created>
+      <option name="number" value="00001" />
+      <option name="presentableId" value="LOCAL‎-00001" />
+      <option name="project" value="LOCAL‎" />
+      <updated>1679340672339</updated>
+    </task>
+    <task id="LOCAL‎-00002" summary="a">
+      <created>1679342306887</created>
+      <option name="number" value="00002" />
+      <option name="presentableId" value="LOCAL‎-00002" />
+      <option name="project" value="LOCAL‎" />
+      <updated>1679342306887</updated>
+    </task>
+    <task id="LOCAL‎-00003" summary="a">
+      <created>1679342494371</created>
+      <option name="number" value="00003" />
+      <option name="presentableId" value="LOCAL‎-00003" />
+      <option name="project" value="LOCAL‎" />
+      <updated>1679342494371</updated>
+    </task>
+    <task id="LOCAL‎-00004" summary="a">
+      <created>1679390699451</created>
+      <option name="number" value="00004" />
+      <option name="presentableId" value="LOCAL‎-00004" />
+      <option name="project" value="LOCAL‎" />
+      <updated>1679390699451</updated>
+    </task>
+    <option name="localTasksCounter" value="5" />
+    <servers />
+  </component>
+  <component name="Vcs.Log.Tabs.Properties">
+    <option name="TAB_STATES">
+      <map>
+        <entry key="3077442f-df15-47f4-b2f0-04a7d23d3285">
+          <value>
+            <State>
+              <option name="FILTERS">
+                <map>
+                  <entry key="branch">
+                    <value>
+                      <list>
+                        <option value="master" />
+                      </list>
+                    </value>
+                  </entry>
+                </map>
+              </option>
+            </State>
+          </value>
+        </entry>
+        <entry key="MAIN">
+          <value>
+            <State>
+              <option name="FILTERS">
+                <map>
+                  <entry key="branch">
+                    <value>
+                      <list>
+                        <option value="master" />
+                      </list>
+                    </value>
+                  </entry>
+                </map>
+              </option>
+            </State>
+          </value>
+        </entry>
+      </map>
+    </option>
+  </component>
+  <component name="VcsManagerConfiguration">
+    <MESSAGE value="a" />
+    <option name="LAST_COMMIT_MESSAGE" value="a" />
+  </component>
+</project>
