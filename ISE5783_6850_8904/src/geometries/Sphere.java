@@ -17,7 +17,7 @@ public class Sphere extends RadialGeometry {
      * The radius length of the sphere.
      * This field overrides the "radius" field in the RadialGeometry class.
      */
-    final private double radius;
+
 
     /**
      * Sphere constructor.
@@ -28,7 +28,6 @@ public class Sphere extends RadialGeometry {
     public Sphere(double radius, Point center) {
         super(radius);
         this.center = center;
-        this.radius = radius;
     }
 
     /**
