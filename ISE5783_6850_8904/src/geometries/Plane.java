@@ -16,7 +16,9 @@ public class Plane implements Geometry {
 
     public Plane(Point p1, Point p2, Point p3) {
         this.q0 = p1; // Set q0 to one of the points
-        this.normal = null; // Initialize normal to null
+        Vector v1= p2.subtract(p1);
+        Vector v2=p3.subtract(p1);
+        this.normal = (v1.crossProduct(v2)).normalize(); // Initialize normal to null
     }
 
     // Methods
