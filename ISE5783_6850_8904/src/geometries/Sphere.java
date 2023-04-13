@@ -2,8 +2,8 @@ package geometries;
 
 import primitives.Point;
 import primitives.Vector;
-wsetferwsgsrgsgfsg
-/**גכשדעערק
+
+/**
  * Sphere class represents a 3D sphere in Cartesian coordinate system.
  * A sphere is defined by its center point and its radius length.
  * A sphere is a radial geometry, so it extends the RadialGeometry abstract class.
