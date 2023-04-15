@@ -8,7 +8,7 @@ import static org.junit.jupiter.api.Assertions.*;
 class PointTest {
 
     @Test
-    void subtract()
+    void testsubtract()
     {
         /**
          * Test method for {@link primitives.Point#subtract(primitives.Point)}.
@@ -27,7 +27,7 @@ class PointTest {
     }
 
     @Test
-    void add()
+    void testadd()
     {
         /**
          * Test method for {@link primitives.Point#add(primitives.Point)}.
@@ -44,7 +44,7 @@ class PointTest {
     }
 
     @Test
-    void distanceSquared()
+    void testdistanceSquared()
     {
         /**
          * Test method for {@link primitives.Point#distanceSquared(primitives.Point)}.
@@ -59,7 +59,7 @@ class PointTest {
     }
 
     @Test
-    void distance()
+    void testdistance()
     {
         /**
          * Test method for {@link primitives.Point#distance(primitives.Point)}.

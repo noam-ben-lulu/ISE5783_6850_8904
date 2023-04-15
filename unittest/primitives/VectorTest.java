@@ -13,7 +13,7 @@ class VectorTest {
      */
 
     @Test
-    void add() {
+    void testadd() {
         // ============ Equivalence Partitions Tests ==============
         Vector v1 = new Vector(1, 2, 3);
         Vector v2 = new Vector(-2, -4, -6);
@@ -26,7 +26,7 @@ class VectorTest {
      * Test method for {@link primitives.Vector#scale(primitives.Vector)}.
      */
     @Test
-    void scale() {
+    void testscale() {
         // ============ Equivalence Partitions Tests ==============
         Vector v1 = new Vector(1, 2, 3);
         assertDoesNotThrow(() ->v1.scale(2));
@@ -40,7 +40,7 @@ class VectorTest {
      * Test method for {@link primitives.Vector#dotProduct(primitives.Vector)}.
      */
     @Test
-    void dotProduct() {
+    void testdotProduct() {
         // ============ Equivalence Partitions Tests ==============
         Vector v1 = new Vector(1, 2, 3);
         Vector v2 = new Vector(-2, -4, -6);
@@ -78,7 +78,7 @@ class VectorTest {
      * Test method for {@link Vector#lengthSquared()(primitives.Vector)}.
      */
     @Test
-    void lengthSquared() {
+    void testlengthSquared() {
         // ============ Equivalence Partitions Tests ==============
         Vector v1 = new Vector(1, 2, 3);
         assertDoesNotThrow(() ->v1.lengthSquared());
@@ -88,7 +88,7 @@ class VectorTest {
      * Test method for {@link Vector#length()(primitives.Vector)}.
      */
     @Test
-    void length() {
+    void testlength() {
         // ============ Equivalence Partitions Tests ==============
         Vector v1 = new Vector(0, 4, 3);
         assertDoesNotThrow(() ->v1.length());
@@ -98,7 +98,7 @@ class VectorTest {
      * Test method for {@link Vector#normalize()(primitives.Vector)}.
      */
     @Test
-    void normalize() {
+    void testnormalize() {
         // ============ Equivalence Partitions Tests ==============
         Vector v1 = new Vector(1, 2, 3);
         assertDoesNotThrow(() -> v1.normalize());
