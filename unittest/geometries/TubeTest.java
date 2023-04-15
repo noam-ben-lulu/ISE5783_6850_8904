@@ -15,7 +15,7 @@ class TubeTest {
      */
     @Test
     void testGetNormal() {
-        Tube t= new Tube(1,new Ray(new Point(0,0,0),new Vector(5,0,0)));
+        Tube t= new Tube(1,new Ray(new Point(0,0,0),new Vector(1,0,0)));
         // ============ 1 Equivalence Partitions Tests ==============
         assertDoesNotThrow(() -> t.getNormal(new Point(1,1,0)));
         assertEquals(1,t.getNormal(new Point(1,1,0)).length(),0.0000001);

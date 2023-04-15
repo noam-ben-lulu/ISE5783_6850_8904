@@ -37,6 +37,15 @@ public class Cylinder extends Tube {
 
     @Override
     public Vector getNormal(Point point) {
-        return null;
+            double t=0;
+            if (!point.equals(axisRay.getP0()))
+                 t = axisRay.getDir().dotProduct(point.subtract(axisRay.getP0()));
+            if (t == this.height) // if is on base B return the dir
+                return axisRay.getDir();
+            else if (t == 0) // if is on base A return the opposite of dir
+                return axisRay.getDir().scale(-1);
+            else
+                return super.getNormal(point);// if is not on the bases then return get normal of tube
+
     }
 }
