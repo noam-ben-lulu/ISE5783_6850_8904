@@ -2,7 +2,10 @@ package geometries;
 
 import org.junit.jupiter.api.Test;
 import primitives.Point;
+import primitives.Ray;
 import primitives.Vector;
+
+import java.util.List;
 
 import static org.junit.jupiter.api.Assertions.*;
 import static primitives.Util.isZero;
@@ -41,5 +44,47 @@ class PlaneTest {
         for (int i = 0; i < 3; ++i)
             assertTrue(isZero(result.dotProduct(pts[i].subtract(pts[i == 0 ? 2 : i - 1]))),
                     "plane normal is not orthogonal to one of the edges");
+    }
+    @Test
+    void testfindIntsersections() {
+        Plane plane = new Plane(new Point(0,0,1), new Vector (0, 0, 1));
+        // ============ Equivalence Partitions Tests ==============
+        // TC01: Ray's line is outside the plane (0 points)
+        assertNull(plane.findIntsersections(new Ray(new Point(0, 0, 2), new Vector(1, 1, 1))),
+                "Ray's line out of Plane");
+        // TC02: Ray starts before and crosses the plane (1 points)
+        Point p1 = new Point(1, 1, 1);
+        List<Point> result = plane.findIntsersections(new Ray(new Point(0, 0, -1),
+                new Vector(1, 1, 2)));
+        assertEquals(1, result.size(), "Wrong number of points");
+        assertEquals(List.of(p1), result, "Ray crosses sphere");
+        // =============== Boundary Values Tests ==================
+        // TC03: A ray outside and parallel to the plane (0 points)
+        assertNull(plane.findIntsersections(new Ray(new Point(0, 0, 2), new Vector(1, 0, 0))),
+                "ray outside and parallel to the plane");
+        // TC04: A ray outside and parallel to the plane (0 points)
+        assertNull(plane.findIntsersections(new Ray(new Point(0, 0, 1), new Vector(1, 0, 0))),
+                "Ray's line in the Plane");
+        // TC05: Ray's  orthogonal and after the plane(0 points)
+        assertNull(plane.findIntsersections(new Ray(new Point(0, 0, 1), new Vector(0, 0, 1))),
+                "Ray's  orthogonal and after the plane");
+        // TC06: Ray's  orthogonal and in the plane(0 points)
+        assertNull(plane.findIntsersections(new Ray(new Point(0, 0, 1), new Vector(0, 0, 1))),
+                "Ray's  orthogonal and in the plane");
+        // TC07:  Ray's  orthogonal and befor the plane (1 points)
+        p1 = new Point(0, 0, 1);
+        result = plane.findIntsersections(new Ray(new Point(0, 0, -1),
+                new Vector(0, 0, 1)));
+        assertEquals(1, result.size(), "Wrong number of points");
+        assertEquals(List.of(p1), result, "Ray crosses plane");
+        // TC07: Ray is neither orthogonal nor parallel to and begins at the plane(0 points)
+        assertNull(plane.findIntsersections(new Ray(new Point(1, 0, 1), new Vector(1, 1, 1))),
+                "Ray's begins at the plane");
+        // TC08: Ray starts in and the Q point (0 points)
+        assertNull(plane.findIntsersections(new Ray(new Point(1, 0, 0), new Vector(-1, -1, -1))),
+                "Ray's begins at the plane");
+        assertThrows(IllegalArgumentException.class,()->plane.findIntsersections(
+                new Ray(new Point(1, 0, 0), new Vector(0,0,0))));
+
     }
 }
