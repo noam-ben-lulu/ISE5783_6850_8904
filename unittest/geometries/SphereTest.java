@@ -18,7 +18,7 @@ class SphereTest {
         // ============ 1 Equivalence Partition ==============
         assertDoesNotThrow(() -> s.getNormal(new Point(5,3,3)));
         Vector normal = s.getNormal(new Point(5,3,3));
-        assertEquals(new Vector(0,-3,0),normal,"Get normal methode in Sphere at equivalence partition has been failed ");
+        assertEquals(normal,new Vector(0,-3,0),"Get normal methode in Sphere at equivalence partition has been failed ");
     }
 
 

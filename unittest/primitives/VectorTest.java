@@ -6,8 +6,6 @@ import static org.junit.jupiter.api.Assertions.*;
 import static primitives.Util.isZero;
 
 class VectorTest {
-    double DELTA  = 0.00001;
-
     /**
      * Test method for {@link primitives.Vector#add(primitives.Vector)}.
      */
@@ -18,7 +16,7 @@ class VectorTest {
         Vector v1 = new Vector(1, 2, 3);
         Vector v2 = new Vector(-2, -4, -6);
         assertDoesNotThrow(() ->v1.add(v2));
-        assertEquals(v1.add(v2),new Vector(-1,-2,-3) , "ERROR: Vector + itself throws wrong exception");
+        assertEquals(new Vector(-1,-2,-3),v1.add(v2) , "ERROR: Vector + itself throws wrong exception");
         // =============== Boundary Values Tests ==================
         assertThrows(IllegalArgumentException.class,()->v1.add(new Vector(-1,-2,-3)));
     }
@@ -30,7 +28,7 @@ class VectorTest {
         // ============ Equivalence Partitions Tests ==============
         Vector v1 = new Vector(1, 2, 3);
         assertDoesNotThrow(() ->v1.scale(2));
-        assertEquals(v1.scale(2),new Vector(2,4,6) , "ERROR: Vector + itself throws wrong exception");
+        assertEquals(new Vector(2,4,6),v1.scale(2) , "ERROR: Vector + itself throws wrong exception");
         // =============== Boundary Values Tests ==================
         assertThrows(IllegalArgumentException.class,()->v1.scale(0));
 
@@ -45,7 +43,7 @@ class VectorTest {
         Vector v1 = new Vector(1, 2, 3);
         Vector v2 = new Vector(-2, -4, -6);
         assertDoesNotThrow(() ->v1.dotProduct(v2));
-        assertEquals(v1.dotProduct(v2),-28 ,DELTA,"ERROR: dotProduct() wrong value");
+        assertEquals(-28,v1.dotProduct(v2) ,0.00001,"ERROR: dotProduct() wrong value");
         // =============== Boundary Values Tests ==================
         assertTrue(isZero(v1.dotProduct((new Vector(-2,1,0)))), "dotProduct() Does not work for a perpendicular vector");
 
@@ -63,7 +61,7 @@ class VectorTest {
         Vector vr = v1.crossProduct(v2);
         // TC01: Test that length of cross-product is proper (orthogonal vectors taken
         // for simplicity)
-        assertEquals(v1.length() * v2.length(), vr.length(), DELTA, "crossProduct() wrong result length");
+        assertEquals(vr.length(),v1.length() * v2.length() , 0.00001, "crossProduct() wrong result length");
         // TC02: Test cross-product result orthogonality to its operands
         assertTrue(isZero(vr.dotProduct(v1)), "crossProduct() result is not orthogonal to 1st operand");
         assertTrue(isZero(vr.dotProduct(v2)), "crossProduct() result is not orthogonal to 2nd operand");
@@ -82,7 +80,7 @@ class VectorTest {
         // ============ Equivalence Partitions Tests ==============
         Vector v1 = new Vector(1, 2, 3);
         assertDoesNotThrow(() ->v1.lengthSquared());
-        assertEquals(v1.lengthSquared(),14,DELTA,"ERROR: lengthSquared() wrong value");
+        assertEquals(14,v1.lengthSquared(),0.00001,"ERROR: lengthSquared() wrong value");
     }
     /**
      * Test method for {@link Vector#length()(primitives.Vector)}.
@@ -92,7 +90,7 @@ class VectorTest {
         // ============ Equivalence Partitions Tests ==============
         Vector v1 = new Vector(0, 4, 3);
         assertDoesNotThrow(() ->v1.length());
-        assertEquals(v1.length(),5,DELTA,"ERROR: length() wrong value");
+        assertEquals(5,v1.length(),0.00001,"ERROR: length() wrong value");
     }
     /**
      * Test method for {@link Vector#normalize()(primitives.Vector)}.
