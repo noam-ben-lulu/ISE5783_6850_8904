@@ -1,12 +1,11 @@
 package geometries;
 
 import primitives.Point;
-import primitives.Ray;
 import primitives.Util;
 import primitives.Vector;
+import primitives.Ray;
 
 import java.util.List;
-
 public class Plane implements Geometry {
     // Fields
     private Point q0; // A point in the plane
@@ -42,7 +41,7 @@ public class Plane implements Geometry {
             return null;
         if(q0.equals(ray.getP0()))
             return null;
-        double t=Util.alignZero(normal.dotProduct(q0.subtract(ray.getP0())))/nv;
+        double t= Util.alignZero(normal.dotProduct(q0.subtract(ray.getP0())))/nv;
         if(t<=0)
             return null;
         return  List.of(ray.getP0().add(ray.getDir().scale(t)));

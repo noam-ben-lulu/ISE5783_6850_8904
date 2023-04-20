@@ -6,6 +6,8 @@ import primitives.Vector;
 
 import java.util.List;
 
+import static java.lang.Math.sqrt;
+
 /**
  * Sphere class represents a 3D sphere in Cartesian coordinate system.
  * A sphere is defined by its center point and its radius length.
@@ -52,9 +54,33 @@ public class Sphere extends RadialGeometry {
     public Vector getNormal(Point point) {
         return point.subtract(center);
     }
-
     @Override
     public List<Point> findIntsersections(Ray ray) {
+        Vector u = this.center.subtract(ray.getP0());
+        double tm = ray.getDir().dotProduct(u);
+        double d = sqrt(u.lengthSquared()-(tm*tm));
+        if(d>=this.radius)
+            return null;
+        double th = sqrt((radius*radius)-(d*d));
+        double t1 = tm+th;
+        double t2 = tm-th;
+        Point p1;
+        Point p2;
+        if(t1>0)
+        {
+            p1 = ray.getP0().add(ray.getDir().scale(t1));
+            if (t2 > 0) {
+                p2 = ray.getP0().add(ray.getDir().scale(t2));
+                return List.of(p1, p2);
+            }
+            return List.of(p1);
+        }
+        if(t2>0)
+        {
+            p2 = ray.getP0().add(ray.getDir().scale(t2));
+            return List.of(p2);
+        }
         return null;
+
     }
 }

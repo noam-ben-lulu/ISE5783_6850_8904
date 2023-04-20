@@ -5,7 +5,6 @@ import primitives.Ray;
 
 import java.util.List;
 
-public interface Intersectable
-{
+public interface Intersectable {
     List<Point> findIntsersections(Ray ray);
 }

@@ -42,7 +42,6 @@ public class Tube extends RadialGeometry {
             return   p.subtract(axisRay.getP0().add(axisRay.getDir().scale(t))).normalize();
         return  p.subtract(axisRay.getP0());
     }
-
     @Override
     public List<Point> findIntsersections(Ray ray) {
         return null;

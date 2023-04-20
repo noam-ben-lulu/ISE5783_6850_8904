@@ -83,12 +83,7 @@ public class Vector extends Point {
      * @return A new Vector object that represents this Vector normalized.
      */
     public Vector normalize() {
-        double len = length();
-        return new Vector(
-                xyz.d1 /len,
-                xyz.d2 /len,
-                xyz.d3 /len
-        );
+        return (this.scale((1 / this.length())));
     }
 
 

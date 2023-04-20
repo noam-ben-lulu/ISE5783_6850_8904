@@ -1,8 +1,8 @@
 package geometries;
 
 import primitives.Point;
-import primitives.Ray;
 import primitives.Vector;
+import primitives.Ray;
 
 import java.util.List;
 
@@ -22,7 +22,7 @@ public class Triangle extends Polygon {
 
     @Override
     public List<Point> findIntsersections(Ray ray) {
-       List list = this.plane.findIntsersections(ray);
+        List list = this.plane.findIntsersections(ray);
         if(list!=null)
         {
             Vector v1 = this.vertices.get(0).subtract(ray.getP0());
@@ -39,6 +39,5 @@ public class Triangle extends Polygon {
         }
         return null;
     }
-
 
 }

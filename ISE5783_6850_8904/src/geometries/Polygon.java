@@ -14,7 +14,7 @@ import primitives.Vector;
  *
  * @author Dan
  */
-public abstract class Polygon implements Geometry {
+public class Polygon implements Geometry {
     /**
      * List of polygon's vertices
      */
@@ -92,5 +92,8 @@ public abstract class Polygon implements Geometry {
         return plane.getNormal();
     }
 
-    public abstract List<Point> findIntsersections(Ray ray);
+    @Override
+    public List<Point> findIntsersections(Ray ray) {
+        return null;
+    }
 }
