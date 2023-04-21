@@ -44,7 +44,7 @@ public class Plane implements Geometry {
         double t= Util.alignZero(normal.dotProduct(q0.subtract(ray.getP0())))/nv;
         if(t<=0)
             return null;
-        return  List.of(ray.getP0().add(ray.getDir().scale(t)));
+        return  List.of(ray.getPoint(t));
 
 
     }

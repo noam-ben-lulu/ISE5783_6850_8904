@@ -88,4 +88,7 @@ public class Point {
         return Objects.equals(xyz, point.xyz);
     }
 
+    public double getX() {
+        return xyz.d1;
+    }
 }

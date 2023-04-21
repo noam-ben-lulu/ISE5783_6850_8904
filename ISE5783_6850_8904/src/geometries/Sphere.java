@@ -2,6 +2,7 @@ package geometries;
 
 import primitives.Point;
 import primitives.Ray;
+import primitives.Util;
 import primitives.Vector;
 
 import java.util.List;
@@ -54,33 +55,40 @@ public class Sphere extends RadialGeometry {
     public Vector getNormal(Point point) {
         return point.subtract(center);
     }
+
     @Override
     public List<Point> findIntsersections(Ray ray) {
-        Vector u = this.center.subtract(ray.getP0());
-        double tm = ray.getDir().dotProduct(u);
-        double d = sqrt(u.lengthSquared()-(tm*tm));
-        if(d>=this.radius)
+        Vector u;
+        double tm=0,d=0;
+        if (!center.equals(ray.getP0())) {
+            u = this.center.subtract(ray.getP0());
+            tm = ray.getDir().dotProduct(u);
+            d = Util.alignZero(sqrt(u.lengthSquared() - (tm * tm)));
+        }
+        if (d >= this.radius)
             return null;
-        double th = sqrt((radius*radius)-(d*d));
-        double t1 = tm+th;
-        double t2 = tm-th;
+        double th = Util.alignZero(sqrt((radius * radius) - (d * d)));
+        double t1 = Util.alignZero(tm + th);
+        double t2 = Util.alignZero(tm - th);
+
         Point p1;
         Point p2;
         if(t1>0)
         {
-            p1 = ray.getP0().add(ray.getDir().scale(t1));
+            p1 = ray.getPoint(t1);
             if (t2 > 0) {
-                p2 = ray.getP0().add(ray.getDir().scale(t2));
+                p2 = ray.getPoint(t2);
                 return List.of(p1, p2);
             }
             return List.of(p1);
         }
         if(t2>0)
         {
-            p2 = ray.getP0().add(ray.getDir().scale(t2));
+            p2 = ray.getPoint(t2);
             return List.of(p2);
         }
         return null;
+
 
     }
 }

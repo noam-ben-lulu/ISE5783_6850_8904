@@ -32,6 +32,7 @@ public class Ray {
     public Vector getDir() {
         return dir;
     }
+    public  Point getPoint(double t) {return p0.add(dir.scale(t));}
 
     /**
      * Returns a string representation of the Ray object, in the format "Ray{p0=<p0>, dir=<dir>}".
