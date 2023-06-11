@@ -2,6 +2,8 @@ package geometries;
 
 import static primitives.Util.isZero;
 
+import java.lang.reflect.Array;
+import java.util.ArrayList;
 import java.util.List;
 
 import primitives.Point;
@@ -14,7 +16,7 @@ import primitives.Vector;
  *
  * @author Dan
  */
-public class Polygon implements Geometry {
+public class Polygon extends Geometry {
     /**
      * List of polygon's vertices
      */
@@ -89,11 +91,45 @@ public class Polygon implements Geometry {
 
     @Override
     public Vector getNormal(Point point) {
-        return plane.getNormal();
+        return plane.getNormal(point);
     }
 
+    /**
+     Computes the intersection point(s) between the current polygon and a given ray.
+     @param ray the ray to intersect with the polygon
+     @return a List<Point> containing the intersection point(s) if exists, otherwise null.
+     @throws IllegalArgumentException if the ray is null
+     */
     @Override
-    public List<Point> findIntsersections(Ray ray) {
-        return null;
+    public List<GeoPoint> findGeoIntersectionsHelper(Ray ray) {
+
+        if (plane.findIntersections(ray) == null) {//at first find if thar is intersection with the plane of the triangle
+            return null;
+        }
+        //calculate according to the calculation in the course's book
+        Point p = plane.findIntersections(ray).get(0);//intersection point
+        ArrayList<Vector> vectors = new ArrayList<>();
+        ArrayList<Vector> normals = new ArrayList<>();
+        Point p0 = ray.getP0();
+        Vector dir = ray.getDir();
+
+        for (Point ver : vertices) {//calculate vectors from p0 to all the vertices of the polygon
+            vectors.add(ver.subtract(p0));
+        }
+
+        for (int j = 0; j < vectors.size() - 1; j++) {//calculate normals
+            normals.add(vectors.get(j).crossProduct(vectors.get(j+1)).normalize());
+        }
+
+        normals.add(vectors.get(vectors.size()-1).crossProduct(vectors.get(0)).normalize());
+        double[] numbers = new double[normals.size()];
+        double a = dir.dotProduct(normals.get(0));
+        double b = 0;
+        for (int j = 1; j < normals.size(); j++) {//checks if all the normals have the same sign
+            b = dir.dotProduct(normals.get(j));
+            if (a * b <= 0)
+                return null;
+        }
+        return List.of(new GeoPoint(this,p));
     }
 }

@@ -2,7 +2,13 @@ import static java.lang.System.out;
 import static primitives.Util.isZero;
 
 import primitives.Point;
+import primitives.Ray;
 import primitives.Vector;
+import renderer.RaysBeam;
+
+import java.io.InputStream;
+import java.util.List;
+import java.util.Scanner;
 /**
  noam ben-lulu 327796850 benlulu@@yatmal.co.il
  menachem kishon 214938904 mkishon@g.jct.ac.il

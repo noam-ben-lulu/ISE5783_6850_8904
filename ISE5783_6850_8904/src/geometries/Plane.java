@@ -6,7 +6,7 @@ import primitives.Vector;
 import primitives.Ray;
 
 import java.util.List;
-public class Plane implements Geometry {
+public class Plane extends Geometry {
     // Fields
     private Point q0; // A point in the plane
     private Vector normal; // The normal vector to the plane
@@ -33,7 +33,7 @@ public class Plane implements Geometry {
         return normal; // Return the pre-calculated normal vector
     }
     @Override
-    public List<Point> findIntsersections(Ray ray) {
+    public List<GeoPoint> findGeoIntersectionsHelper(Ray ray) {
         //   if (ray.getDir()==new Vector(0,0,0))
         //     throw new IllegalArgumentException("The direction of the ray is a zero vector");
         double nv = normal.dotProduct(ray.getDir());
@@ -44,7 +44,7 @@ public class Plane implements Geometry {
         double t= Util.alignZero(normal.dotProduct(q0.subtract(ray.getP0())))/nv;
         if(t<=0)
             return null;
-        return  List.of(ray.getPoint(t));
+        return  List.of( new GeoPoint(this,ray.getPoint(t)));
 
 
     }

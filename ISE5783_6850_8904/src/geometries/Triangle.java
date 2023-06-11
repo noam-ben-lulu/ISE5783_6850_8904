@@ -21,9 +21,9 @@ public class Triangle extends Polygon {
     }
 
     @Override
-    public List<Point> findIntsersections(Ray ray) {
-        List list = this.plane.findIntsersections(ray);
-       // Point p=list.get(0);
+    public List<GeoPoint> findGeoIntersectionsHelper(Ray ray) {
+        List<Point> list = this.plane.findIntersections(ray);
+        // Point p=list.get(0);
         if(list!=null)
         {
             Vector v1 = this.vertices.get(0).subtract(ray.getP0());
@@ -38,7 +38,7 @@ public class Triangle extends Polygon {
             if(isZero(ray.getDir().dotProduct(v1))||isZero(ray.getDir().dotProduct(v2))||isZero(ray.getDir().dotProduct(v3)))
                 return null;
             if((t1>0&&t2>0&&t3>0)||(t1<0&&t2<0&&t3<0))
-                return list;
+                return List.of(new GeoPoint(this,list.get(0)));
             return null;
         }
         return null;

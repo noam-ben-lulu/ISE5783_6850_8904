@@ -6,7 +6,7 @@ import static java.lang.Math.sqrt;
 
 public class Point {
     Double3 xyz;
-
+    public static final Point ZERO = new Point(0,0,0) ;
     /**
      * Constructor for creating a new Point object with given x, y, and z coordinates.
      *

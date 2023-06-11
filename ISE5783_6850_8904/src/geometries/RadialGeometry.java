@@ -3,7 +3,7 @@ package geometries;
 /**
  * An abstract class representing radial geometries, which have a single radius value.
  */
-public abstract class RadialGeometry implements Geometry{
+public abstract class RadialGeometry extends Geometry{
     protected final double radius; // The radius value, protected to allow access by child classes
 
     /**
