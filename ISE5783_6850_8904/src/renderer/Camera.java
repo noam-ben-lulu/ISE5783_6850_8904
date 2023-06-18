@@ -10,6 +10,10 @@ import primitives.Ray;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
+import java.util.stream.IntStream;
+
+import static primitives.Util.alignZero;
+import static primitives.Util.isZero;
 
 public class Camera {
 
@@ -65,15 +69,24 @@ public class Camera {
         int nX = imageWriter.getNx();
         int nY = imageWriter.getNy();
 
-        for (int i = 0; i < nX; i++) {
-            for (int j = 0; j < nY; j++) {
-                ray = constructRay(nX,nY,i,j);
-              Color color = rayTracer.traceRay(ray);
+      //  for (int i = 0; i < nX; i++) {
+           // for (int j = 0; j < nY; j++) {
+             //   ray = constructRay(nX,nY,i,j);
+             // Color color = rayTracer.traceRay(ray);
+
                 // The anti-Analzing improvment
                 //Color color = rayTracer.traceBeamRay(constructRayBeam(j,i, imageWriter.getNx(),  imageWriter.getNy(), 17,17, height / imageWriter.getNy(), width / imageWriter.getNx()));
-                imageWriter.writePixel(i, j, color);
-            }
-        }
+              //  imageWriter.writePixel(i, j, color);
+          //  }
+       // }
+        Pixel.initialize(nY, nX, 0);
+        IntStream.range(0, nY).parallel().forEach(i -> {
+            IntStream.range(0, nX).parallel().forEach(j -> {
+                imageWriter.writePixel(j, i,castRay(nX, nY, j, i));
+                Pixel.pixelDone();
+                Pixel.printPixel();
+            });
+        });
         return imageWriter;
     }
     /**
@@ -165,6 +178,9 @@ public class Camera {
         Vector Vij=Pij.subtract(this.p0);
         return new Ray(this.p0,Vij);
     }
+    private Color castRay(int nX, int nY, int i, int j) {
+        return rayTracer.traceRay(constructRay(nX, nY, i, j));
+    }
     /**
      * Gets the center point of a pixel in the viewport.
      *
@@ -177,12 +193,26 @@ public class Camera {
      * @return The center point of the specified pixel
      */
     private Point getCenterOfPixel(int i, int j, int nX, int nY, double pixelHeight, double pixelWidth) {
-        Point center = p0.add(vTo.scale(distance));
-        double yi = -(i - ((double) nY - 1) / 2) * pixelHeight;
-        if (yi != 0) center = center.add(vUp.scale(yi));
-        double xj = (j - ((double) nX - 1) / 2) * pixelWidth;
-        if (xj != 0) center = center.add(vRight.scale(xj));
-        return center;
+        // calculate the ratio of the pixel by the height and by the width of the view plane
+        // the ratio Ry = h/Ny, the height of the pixel
+        double rY = alignZero(height / nY);
+        // the ratio Rx = w/Nx, the width of the pixel
+        double rX = alignZero(width / nX);
+
+        // Xj = (j - (Nx -1)/2) * Rx
+        double xJ = alignZero((j - ((nX - 1d) / 2d)) * rX);
+        // Yi = -(i - (Ny - 1)/2) * Ry
+        double yI = alignZero(-(i - ((nY - 1d) / 2d)) * rY);
+
+        Point pIJ = this.p0;
+
+        if (!isZero(xJ)) {
+            pIJ = pIJ.add(vRight.scale(xJ));
+        }
+        if (!isZero(yI)) {
+            pIJ = pIJ.add(vUp.scale(yI));
+        }
+        return pIJ;
     }
 
     /**
