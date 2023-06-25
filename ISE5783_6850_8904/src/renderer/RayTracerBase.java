@@ -5,7 +5,9 @@
 package renderer;
 
 import primitives.Color;
+import primitives.Point;
 import primitives.Ray;
+import primitives.Vector;
 import scene.Scene;
 
 import java.util.List;
@@ -34,4 +36,5 @@ public abstract class RayTracerBase {
      */
     public abstract Color traceRay(Ray ray);
     public abstract  Color traceBeamRay(List<Ray> beam);
+    //public abstract Color performAdaptiveSuperSampling(Point centerPoint, double pixelWidth, double pixelHeight, double minSubdivisionWidth, double minSubdivisionHeight, Point cameraLocation, Vector rightVector, Vector upVector, List<Point> previousPoints);
 }

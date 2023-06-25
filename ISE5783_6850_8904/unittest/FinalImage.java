@@ -1,10 +1,7 @@
 import geometries.Plane;
 import geometries.Polygon;
 import geometries.Sphere;
-import geometries.Triangle;
 import lighting.AmbientLight;
-import lighting.DirectionalLight;
-import lighting.PointLight;
 import lighting.SpotLight;
 import org.junit.jupiter.api.Test;
 import primitives.*;
@@ -13,15 +10,10 @@ import renderer.ImageWriter;
 import renderer.RayTracerBasic;
 import scene.Scene;
 
-import java.io.Console;
-import java.io.InputStream;
-import java.util.Scanner;
-
-import static java.awt.Color.BLUE;
 import static java.awt.Color.WHITE;
 //import static java.util.TreeMap.RED;
 
-public class imgaeIntergration {
+public class FinalImage {
     private Scene         scene      = new Scene("my image");
 
     @Test
@@ -82,8 +74,9 @@ public class imgaeIntergration {
 
         ImageWriter imageWriter = new ImageWriter("Car", 1000, 1000);
         camera.setImageWriter(imageWriter) //
-                .setRayTracer(new RayTracerBasic(scene)) //
+                .setRayTracer(new RayTracerBasic(scene)).setAntiAliasing(false) //
                 .renderImage() //
                 .writeToImage();
     }
+
 }

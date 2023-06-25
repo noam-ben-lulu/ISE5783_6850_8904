@@ -13,6 +13,7 @@ import scene.Scene;
 import geometries.Intersectable.GeoPoint;
 
 
+import java.util.LinkedList;
 import java.util.List;
 
 import static java.lang.StrictMath.pow;
@@ -288,5 +289,7 @@ public class RayTracerBasic extends RayTracerBase {
         }
         return tmp.reduce(beam.size());
     }
+
+
 
 }

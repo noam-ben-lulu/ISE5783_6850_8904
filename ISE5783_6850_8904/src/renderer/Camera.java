@@ -8,12 +8,11 @@ import primitives.Vector;
 import primitives.Ray;
 
 import java.util.ArrayList;
+import java.util.LinkedList;
 import java.util.List;
-import java.util.Random;
 import java.util.stream.IntStream;
 
 import static primitives.Util.alignZero;
-import static primitives.Util.isZero;
 
 public class Camera {
 
@@ -40,6 +39,23 @@ public class Camera {
 
     private ImageWriter imageWriter;
     private RayTracerBase rayTracer;
+    private boolean antiAliasing=false;
+    private boolean adaptive;
+    private int threads;
+
+    public Camera setAntiAliasing(boolean antiAliasing) {
+        this.antiAliasing = antiAliasing;
+        return this;
+    }
+    public Camera setadaptive(boolean adaptive) {
+        this.adaptive = adaptive;
+        return this;
+    }
+
+    public Camera setThreads(int threads) {
+        this.threads = threads;
+        return this;
+    }
 
     /**
      * Sets the  imageWriter
@@ -79,21 +95,30 @@ public class Camera {
               //  imageWriter.writePixel(i, j, color);
           //  }
        // }
-        Pixel.initialize(nY, nX, 0);
-        IntStream.range(0, nY).parallel().forEach(i -> {
-            IntStream.range(0, nX).parallel().forEach(j -> {
-                imageWriter.writePixel(j, i,castRay(nX, nY, j, i));
-                Pixel.pixelDone();
-                Pixel.printPixel();
-            });
-        });
+        if(threads < 1)
+        {
+            for (int i = 0; i < nX; i++) {
+                for (int j = 0; j < nY; j++) {
+                    imageWriter.writePixel(i, j, castRay(nX, nY, i, j));
+                }
+            }
+            return imageWriter;
+        };
+        Pixel.initialize(nY, nX, 1);
+        while (threads-- > 0) {
+            new Thread(() -> {
+                for (Pixel pixel = new Pixel(); pixel.nextPixel(); Pixel.pixelDone())
+                    imageWriter.writePixel( pixel.col, pixel.row, castRay(nX, nY, pixel.col, pixel.row));
+            }).start();
+        }
+        Pixel.waitToFinish();
         return imageWriter;
     }
     /**
      * Creat a grid to the image
      */
 
-    public void printGrid(int interval, Color color)
+    public Camera printGrid(int interval, Color color)
     {
         if (imageWriter == null) throw new UnsupportedOperationException("MissingResourcesException");
 
@@ -107,7 +132,36 @@ public class Camera {
                 imageWriter.writePixel(j, i, new Color(color.getColor()));
             }
         }
+        return this;
     }
+    /**
+     * Checks the color of the pixel with the help of individual rays and averages between them and only
+     * if necessary continues to send beams of rays in recursion
+     * @param nX Pixel length
+     * @param nY Pixel width
+     * @param j The position of the pixel relative to the y-axis
+     * @param i The position of the pixel relative to the x-axis
+     * @param numOfRays The amount of rays sent
+     * @return Pixel color
+     */
+  //  private Color AdaptiveSuperSampling(int nX, int nY, int j, int i,  int numOfRays)  {
+       // Vector Vright = vRight;
+       // Vector Vup = vUp;
+       /// Point cameraLoc = this.p0;
+       // int numOfRaysInRowCol = (int)Math.floor(Math.sqrt(numOfRays));
+       // if(numOfRaysInRowCol == 1)  return castRay(nX,nY,j,i);
+
+      //  Point pIJ = getCenterOfPixel(nX, nY, j, i,height / imageWriter.getNy(),width / imageWriter.getNx());
+
+       // double rY = alignZero(height / nY);
+       // // the ratio Rx = w/Nx, the width of the pixel
+       // double rX = alignZero(width / nX);
+
+
+       // double PRy = rY/numOfRaysInRowCol;
+      //  double PRx = rX/numOfRaysInRowCol;
+      //  return rayTracer.performAdaptiveSuperSampling(pIJ, rX, rY, PRx, PRy,cameraLoc,Vright, Vup,null);
+    //}
     /**
      send to the function that appear at imageWriter
      */
@@ -192,27 +246,14 @@ public class Camera {
      * @param pixelWidth  The width of a pixel
      * @return The center point of the specified pixel
      */
-    private Point getCenterOfPixel(int i, int j, int nX, int nY, double pixelHeight, double pixelWidth) {
-        // calculate the ratio of the pixel by the height and by the width of the view plane
-        // the ratio Ry = h/Ny, the height of the pixel
-        double rY = alignZero(height / nY);
-        // the ratio Rx = w/Nx, the width of the pixel
-        double rX = alignZero(width / nX);
-
-        // Xj = (j - (Nx -1)/2) * Rx
-        double xJ = alignZero((j - ((nX - 1d) / 2d)) * rX);
-        // Yi = -(i - (Ny - 1)/2) * Ry
-        double yI = alignZero(-(i - ((nY - 1d) / 2d)) * rY);
-
-        Point pIJ = this.p0;
-
-        if (!isZero(xJ)) {
-            pIJ = pIJ.add(vRight.scale(xJ));
-        }
-        if (!isZero(yI)) {
-            pIJ = pIJ.add(vUp.scale(yI));
-        }
-        return pIJ;
+    public Point getCenterOfPixel(int i, int j, int nX,int nY,double pixelHeight,double pixelWidth)
+    {
+        Point center = this.p0.add(this.vTo.scale(distance));
+        double yi = -(i - ((double)nY - 1) / 2) * pixelHeight;
+        if (yi !=0 ) center = center.add(this.vUp.scale(yi));
+        double xj = (j - ((double)nX - 1) / 2) * pixelWidth;
+        if (xj !=0 ) center = center.add(this.vRight.scale(xj));
+        return center;
     }
 
     /**
@@ -287,6 +328,7 @@ public class Camera {
     public double getDistance() {
         return distance;
     }
+
 
 
 }
