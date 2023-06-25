@@ -13,15 +13,21 @@ import scene.Scene;
 import geometries.Intersectable.GeoPoint;
 
 
+import java.util.ArrayList;
 import java.util.LinkedList;
 import java.util.List;
 
 import static java.lang.StrictMath.pow;
 import static primitives.Util.alignZero;
+import static primitives.Util.isZero;
 
 public class RayTracerBasic extends RayTracerBase {
+
     private static final int MAX_CALC_COLOR_LEVEL = 10;
     private static final double MIN_CALC_COLOR_K = 0.001;
+    private static  double DISTANCE = 20;
+    private static  double NUM_OF_RAYS = 17*17;
+    private double sizeGrid=17;
 
 
 
@@ -90,20 +96,110 @@ public class RayTracerBasic extends RayTracerBase {
         Vector v = ray.getDir();
         Vector n = gp.geometry.getNormal(gp.point);
         Material material = gp.geometry.getMaterial();
-        Ray reflectedRay = constructReflectedRay(gp.point , v,n);
-        GeoPoint reflectedPoint = findClosestIntersection(reflectedRay);
+        Ray reflectedRay = constructReflectedRay(gp.point, v, n);
         Double3 kr = material.getkR(), kkr = k.product(kr);
-        if (!kkr.lowerThan(MIN_CALC_COLOR_K) && reflectedPoint!=null)
-            color = color.add(calcColor(reflectedPoint, reflectedRay,level-1,kkr)
-                    .scale(kr));
+        if (!kkr.lowerThan(MIN_CALC_COLOR_K))
+        {
+            if (!Useg) {
+                GeoPoint reflectedPoint = findClosestIntersection(reflectedRay);
+                if(reflectedPoint != null)
+                    color = color.add(calcColor(reflectedPoint, reflectedRay, level - 1, kkr)
+                            .scale(kr));
 
+
+            }
+            else {
+                List<Ray> rays = raysGrid( new Ray(gp.point,reflectedRay.getDir(),n),-1,material.kG,n);
+                color = color.add(average_color_calculator(rays).scale(kr));
+
+            }
+        }
         Ray refractedRay = constructRefractedRay(gp.point, v,n);
-        GeoPoint refractedPoint = findClosestIntersection(refractedRay);
         Double3 kt = material.getkT(), kkt = k.product(kt);
-        if (!kkt.lowerThan( MIN_CALC_COLOR_K) && refractedPoint!=null) color =
-                color.add(calcColor(refractedPoint, refractedRay,level-1,kkt)
-                        .scale(kt));
+        if (!kkt.lowerThan( MIN_CALC_COLOR_K)) {
+            if (!Useb) {
+                GeoPoint refractedPoint = findClosestIntersection(refractedRay);
+                if (refractedPoint != null) color =
+                        color.add(calcColor(refractedPoint, refractedRay, level - 1, kkt).scale(kt));
+            }
+            else
+            {
+                List<Ray> rays = raysGrid(new Ray(gp.point, v, n),1,material.getkB(), n);
+                color = color.add(average_color_calculator(rays).scale(kt));
+            }
+        }
+
         return color;
+    }
+    public Color average_color_calculator(List<Ray> rays){
+        Color aver=Color.BLACK;
+        if (rays.size()==0)
+            return aver;
+        for (Ray ray : rays){
+            GeoPoint point = findClosestIntersection(ray);
+            // If no intersections are found, add the background color of the scene
+            if (point == null)
+                aver= aver.add(scene.background) ;
+                // Calculates add returns the color of the point of intersection
+            else
+            {
+                Color c=calcColor(point,ray);
+                aver=aver.add(c);
+            }
+        }
+        return aver.reduce(new Double3(rays.size()));
+    }
+    List<Ray> raysGrid(Ray ray, int direction, double glossy, Vector n) {
+        int numOfRowCol = isZero(glossy) ? 1 : (int) Math.ceil(Math.sqrt(NUM_OF_RAYS));
+        if (numOfRowCol == 1) {
+            return List.of(ray);
+        }
+
+        Vector Vup;
+        double Ax = Math.abs(ray.getDir().getX());
+        double Ay = Math.abs(ray.getDir().getY());
+        double Az = Math.abs(ray.getDir().getZ());
+
+        if (Ax < Ay) {
+            Vup = Ax < Az ? new Vector(0, -ray.getDir().getZ(), ray.getDir().getY()) :
+                    new Vector(-ray.getDir().getY(), ray.getDir().getX(), 0);
+        } else {
+            Vup = Ay < Az ? new Vector(ray.getDir().getZ(), 0, -ray.getDir().getX()) :
+                    new Vector(-ray.getDir().getY(), ray.getDir().getX(), 0);
+        }
+
+        Vector Vright = Vup.crossProduct(ray.getDir()).normalize();
+        Point pc = ray.getPoint(DISTANCE);
+        double step = glossy / sizeGrid;
+        Point pij = pc.add(Vright.scale(numOfRowCol / 2 * -step)).add(Vup.scale(numOfRowCol / 2 * -step));
+        Vector tempRayVector;
+        Point Pij1;
+
+        List<Ray> rays = new ArrayList<>();
+        rays.add(ray);
+
+        for (int i = 1; i < numOfRowCol; i++) {
+            for (int j = 1; j < numOfRowCol; j++) {
+                Pij1 = pij.add(Vright.scale(i * step)).add(Vup.scale(j * step));
+                tempRayVector = Pij1.subtract(ray.getP0());
+
+                if (n.dotProduct(tempRayVector) < 0 && direction == 1) { // refraction
+                    rays.add(new Ray(ray.getP0(), tempRayVector));
+                }
+
+                if (n.dotProduct(tempRayVector) > 0 && direction == -1) { // reflection
+                    rays.add(new Ray(ray.getP0(), tempRayVector));
+                }
+            }
+        }
+
+        return rays;
+    }
+    public RayTracerBasic set_Glossy_promoted(double num_rays, double distanse,double size){
+        NUM_OF_RAYS=num_rays;
+        DISTANCE=distanse;
+        sizeGrid=size;
+        return this;
     }
     /**
      * Calculates the color for a given intersection point, taking into account local effects (diffuse and specular reflection).
@@ -289,6 +385,83 @@ public class RayTracerBasic extends RayTracerBase {
         }
         return tmp.reduce(beam.size());
     }
+
+    /**
+     * Checks the color of the pixel with the help of individual rays and averages between
+     * them and only if necessary continues to send beams of rays in recursion
+     * @param centerP center pixl
+     * @param Width Length
+     * @param Height width
+     * @param minWidth min Width
+     * @param minHeight min Height
+     * @param cameraLoc Camera location
+     * @param Vright Vector right
+     * @param Vup vector up
+     * @param prePoints pre Points
+     * @return Pixel color
+     */
+    @Override
+    public Color AdaptiveSuperSamplingRec(Point centerP, double Width, double Height, double minWidth, double minHeight, Point cameraLoc, Vector Vright, Vector Vup, List<Point> prePoints) {
+        if (Width < minWidth * 2 || Height < minHeight * 2) {
+            return this.traceRay(new Ray(cameraLoc, centerP.subtract(cameraLoc))) ;
+        }
+
+        List<Point> nextCenterPList = new LinkedList<>();
+        List<Point> cornersList = new LinkedList<>();
+        List<primitives.Color> colorList = new LinkedList<>();
+        Point tempCorner;
+        Ray tempRay;
+        for (int i = -1; i <= 1; i += 2){
+            for (int j = -1; j <= 1; j += 2) {
+                tempCorner = centerP.add(Vright.scale(i * Width / 2)).add(Vup.scale(j * Height / 2));
+                cornersList.add(tempCorner);
+                if (prePoints == null || !isInList(prePoints, tempCorner)) {
+                    tempRay = new Ray(cameraLoc, tempCorner.subtract(cameraLoc));
+                    nextCenterPList.add(centerP.add(Vright.scale(i * Width / 4)).add(Vup.scale(j * Height / 4)));
+                    colorList.add(traceRay(tempRay));
+                }
+            }
+        }
+
+
+        if (nextCenterPList == null || nextCenterPList.size() == 0) {
+            return primitives.Color.BLACK;
+        }
+
+
+        boolean isAllEquals = true;
+        primitives.Color tempColor = colorList.get(0);
+        for (primitives.Color color : colorList) {
+            if (!tempColor.isAlmostEquals(color))
+                isAllEquals = false;
+        }
+        if (isAllEquals && colorList.size() > 1)
+            return tempColor;
+
+
+        tempColor = primitives.Color.BLACK;
+        for (Point center : nextCenterPList) {
+            tempColor = tempColor.add(AdaptiveSuperSamplingRec(center, Width/2,  Height/2,  minWidth,  minHeight ,  cameraLoc, Vright, Vup, cornersList));
+        }
+        return tempColor.reduce(nextCenterPList.size());
+
+
+    }
+
+    /**
+     * Find a point in the list
+     * @param pointsList the list
+     * @param point the point that we look for
+     * @return
+     */
+    private boolean isInList(List<Point> pointsList, Point point) {
+        for (Point tempPoint : pointsList) {
+            if(point.equals(tempPoint))
+                return true;
+        }
+        return false;
+    }
+}
 
 
 

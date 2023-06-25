@@ -39,16 +39,19 @@ public class Camera {
 
     private ImageWriter imageWriter;
     private RayTracerBase rayTracer;
-    private boolean antiAliasing=false;
+   // private boolean antiAliasing=false;
     private boolean adaptive;
     private int threads;
+    private int sharpnessRays=1;
 
-    public Camera setAntiAliasing(boolean antiAliasing) {
-        this.antiAliasing = antiAliasing;
-        return this;
-    }
-    public Camera setadaptive(boolean adaptive) {
-        this.adaptive = adaptive;
+//    public Camera setAntiAliasing(boolean antiAliasing) {
+      //  this.antiAliasing = antiAliasing;
+        //return this;
+   // }
+
+
+    public Camera setSharpnessRays(int sharpnessRays) {
+        this.sharpnessRays = sharpnessRays;
         return this;
     }
 
@@ -56,7 +59,10 @@ public class Camera {
         this.threads = threads;
         return this;
     }
-
+    public Camera setadaptive(boolean adaptive) {
+        this.adaptive = adaptive;
+        return this;
+    }
     /**
      * Sets the  imageWriter
      *  @return The Camera object
@@ -76,7 +82,7 @@ public class Camera {
     /**
      * The function is color the image by construct rays to the fixel and calculus the color
      */
-    public ImageWriter renderImage(){
+    public Camera renderImage(){
         if (this.rayTracer == null || this.imageWriter == null || this.width == 0 || this.height == 0 || this.distance == 0)
             throw new UnsupportedOperationException("MissingResourcesException");
 
@@ -85,34 +91,65 @@ public class Camera {
         int nX = imageWriter.getNx();
         int nY = imageWriter.getNy();
 
-      //  for (int i = 0; i < nX; i++) {
-           // for (int j = 0; j < nY; j++) {
+      // for (int i = 0; i < nX; i++) {
+          //  for (int j = 0; j < nY; j++) {
              //   ray = constructRay(nX,nY,i,j);
              // Color color = rayTracer.traceRay(ray);
 
                 // The anti-Analzing improvment
-                //Color color = rayTracer.traceBeamRay(constructRayBeam(j,i, imageWriter.getNx(),  imageWriter.getNy(), 17,17, height / imageWriter.getNy(), width / imageWriter.getNx()));
-              //  imageWriter.writePixel(i, j, color);
+              //  Color color = rayTracer.traceBeamRay(constructRayBeam(j,i, imageWriter.getNx(),  imageWriter.getNy(), 17,17, height / imageWriter.getNy(), width / imageWriter.getNx()));
+               //imageWriter.writePixel(i, j, color);
           //  }
        // }
         if(threads < 1)
         {
             for (int i = 0; i < nX; i++) {
                 for (int j = 0; j < nY; j++) {
+                    //Color color = rayTracer.average_color_calculator(constructRayBeam(j,i, imageWriter.getNx(),  imageWriter.getNy(), 17,17, height / imageWriter.getNy(), width / imageWriter.getNx()));
                     imageWriter.writePixel(i, j, castRay(nX, nY, i, j));
                 }
             }
-            return imageWriter;
+            return this;
         };
         Pixel.initialize(nY, nX, 1);
         while (threads-- > 0) {
             new Thread(() -> {
-                for (Pixel pixel = new Pixel(); pixel.nextPixel(); Pixel.pixelDone())
-                    imageWriter.writePixel( pixel.col, pixel.row, castRay(nX, nY, pixel.col, pixel.row));
+                for (Pixel pixel = new Pixel(); pixel.nextPixel(); Pixel.pixelDone()) {
+                    Color color = rayTracer.average_color_calculator(constructRayBeam(pixel.col, pixel.row, imageWriter.getNx(), imageWriter.getNy(), 9, 9, height / imageWriter.getNy(), width / imageWriter.getNx()));
+                    imageWriter.writePixel(pixel.col, pixel.row, color);
+                }
             }).start();
         }
         Pixel.waitToFinish();
-        return imageWriter;
+        return this;
+    }
+    /**
+     * Checks the color of the pixel with the help of individual rays and averages between them and only
+     * if necessary continues to send beams of rays in recursion
+     * @param nX Pixel length
+     * @param nY Pixel width
+     * @param j The position of the pixel relative to the y-axis
+     * @param i The position of the pixel relative to the x-axis
+     * @param numOfRays The amount of rays sent
+     * @return Pixel color
+     */
+    private Color AdaptiveSuperSampling(int nX, int nY, int j, int i,  int numOfRays)  {
+        Vector Vright = vRight;
+        Vector Vup = vUp;
+        Point cameraLoc = this.p0;
+        int numOfRaysInRowCol = (int)Math.floor(Math.sqrt(numOfRays));
+        if(numOfRaysInRowCol == 1)  return castRay(nX,nY,j,i);
+        double rY = alignZero(height / nY);
+        // the ratio Rx = w/Nx, the width of the pixel
+        double rX = alignZero(width / nX);
+        Point pIJ = getCenterOfPixel(i,j,nX,nY,rY,rX);
+
+
+
+
+        double PRy = rY/numOfRaysInRowCol;
+        double PRx = rX/numOfRaysInRowCol;
+        return rayTracer.AdaptiveSuperSamplingRec(pIJ, rX, rY, PRx, PRy,cameraLoc,Vright, Vup,null);
     }
     /**
      * Creat a grid to the image
@@ -144,24 +181,7 @@ public class Camera {
      * @param numOfRays The amount of rays sent
      * @return Pixel color
      */
-  //  private Color AdaptiveSuperSampling(int nX, int nY, int j, int i,  int numOfRays)  {
-       // Vector Vright = vRight;
-       // Vector Vup = vUp;
-       /// Point cameraLoc = this.p0;
-       // int numOfRaysInRowCol = (int)Math.floor(Math.sqrt(numOfRays));
-       // if(numOfRaysInRowCol == 1)  return castRay(nX,nY,j,i);
 
-      //  Point pIJ = getCenterOfPixel(nX, nY, j, i,height / imageWriter.getNy(),width / imageWriter.getNx());
-
-       // double rY = alignZero(height / nY);
-       // // the ratio Rx = w/Nx, the width of the pixel
-       // double rX = alignZero(width / nX);
-
-
-       // double PRy = rY/numOfRaysInRowCol;
-      //  double PRx = rX/numOfRaysInRowCol;
-      //  return rayTracer.performAdaptiveSuperSampling(pIJ, rX, rY, PRx, PRy,cameraLoc,Vright, Vup,null);
-    //}
     /**
      send to the function that appear at imageWriter
      */

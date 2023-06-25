@@ -7,9 +7,29 @@ public class Material {
     public Double3 kD = Double3.ZERO;  // Diffuse reflection coefficient
     public Double3 kS = Double3.ZERO;  // Specular reflection coefficient
     public int nShininess = 0;  // Shininess coefficient
+    public Double3 kT=Double3.ZERO, kR=Double3.ZERO;
 
-    public Double3 kT = Double3.ZERO;  // Transparency coefficient
-    public Double3 kR = Double3.ZERO;  // Reflection coefficient
+    public double kB=0, kG=0;
+
+    public double getkB() {
+        return kB;
+    }
+    public double getkG() {
+        return kG;
+    }
+
+
+
+    public Material setkB(double kB) {
+        this.kB = kB;
+        return this;
+
+    }
+
+    public Material setkG(double kG) {
+        this.kG = kG;
+        return this;
+    }
 
     /**
      * Sets the diffuse reflection coefficient (kD) of the material.
@@ -55,28 +75,15 @@ public class Material {
         return this;
     }
 
-    /**
-     * Sets the reflection coefficient (kR) of the material.
-     *
-     * @param kR The reflection coefficient as a `Double3` object.
-     * @return The updated `Material` object.
-     */
     public Material setkR(Double3 kR) {
         this.kR = kR;
         return this;
-    }
 
-    /**
-     * Sets the reflection coefficient (kR) of the material.
-     *
-     * @param kR The reflection coefficient as a double value.
-     * @return The updated `Material` object.
-     */
+    }
     public Material setkR(double kR) {
         this.kR = new Double3(kR);
         return this;
     }
-
     /**
      * Sets the shininess coefficient (nShininess) of the material.
      *
@@ -87,65 +94,28 @@ public class Material {
         this.nShininess = nShininess;
         return this;
     }
-
-    /**
-     * Sets the diffuse reflection coefficient (kD) of the material.
-     *
-     * @param kD The diffuse reflection coefficient as a `Double3` object.
-     * @return The updated `Material` object.
-     */
     public Material setkD(Double3 kD) {
         this.kD = kD;
         return this;
     }
-
-    /**
-     * Sets the diffuse reflection coefficient (kD) of the material.
-     *
-     * @param kD The diffuse reflection coefficient as a double value.
-     * @return The updated `Material` object.
-     */
     public Material setkD(double kD) {
         this.kD = new Double3(kD);
         return this;
     }
 
-    /**
-     * Sets the transparency coefficient (kT) of the material.
-     *
-     * @param kT The transparency coefficient as a double value.
-     * @return The updated `Material` object.
-     */
     public Material setkT(double kT) {
-        this.kT = new Double3(kT);
+        this.kT=new Double3(kT);
         return this;
     }
-
-    /**
-     * Sets the transparency coefficient (kT) of the material.
-     *
-     * @param kT The transparency coefficient as a `Double3` object.
-     * @return The updated `Material` object.
-     */
     public Material setkT(Double3 kT) {
         this.kT = kT;
         return this;
     }
 
-    /**
-     * Returns the reflection coefficient (kR) of the material.
-     *
-     * @return The reflection coefficient as a `Double3` object.
-     */
     public Double3 getkR() {
         return kR;
     }
 
-    /**
-     * Returns the transparency coefficient (kT) of the material.
-     *
-     * @return The transparency coefficient as a `Double3` object.
-     */
     public Double3 getkT() {
         return kT;
     }

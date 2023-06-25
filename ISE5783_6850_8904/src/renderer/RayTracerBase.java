@@ -4,6 +4,7 @@
  */
 package renderer;
 
+import geometries.Intersectable;
 import primitives.Color;
 import primitives.Point;
 import primitives.Ray;
@@ -18,6 +19,21 @@ public abstract class RayTracerBase {
      * The scene to be rendered.
      */
     protected Scene scene;
+    protected boolean Useg;
+
+    public abstract  Color traceBeamRay(List<Ray> beam);
+
+    public RayTracerBase setUseg(boolean useg) {
+        Useg = useg;
+        return this;
+    }
+
+    public RayTracerBase setUseb(boolean useb) {
+        Useb = useb;
+        return this;
+    }
+
+    protected boolean Useb;
 
     /**
      * Constructs a new RayTracerBase object with the given scene.
@@ -35,6 +51,7 @@ public abstract class RayTracerBase {
      * @return the color of the closest intersection between the ray and the scene's geometries
      */
     public abstract Color traceRay(Ray ray);
-    public abstract  Color traceBeamRay(List<Ray> beam);
-    //public abstract Color performAdaptiveSuperSampling(Point centerPoint, double pixelWidth, double pixelHeight, double minSubdivisionWidth, double minSubdivisionHeight, Point cameraLocation, Vector rightVector, Vector upVector, List<Point> previousPoints);
+    public abstract Color average_color_calculator(List<Ray> rays);
+    public abstract Color AdaptiveSuperSamplingRec(Point centerP, double Width, double Height, double minWidth, double minHeight, Point cameraLoc, Vector Vright, Vector Vup, List<Point> prePoints);
+
 }
