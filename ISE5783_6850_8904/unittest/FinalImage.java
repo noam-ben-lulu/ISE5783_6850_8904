@@ -22,7 +22,7 @@ public class FinalImage {
     public void Cars() {
         Camera camera = new Camera(new Point(-4000,4000,1000), new Vector(4,-4,-1),
                 new Vector(1, -1, 8)) //
-                .setVPSize(1000, 1000).setVPDistance(1000).setThreads(4);
+                .setVPSize(1000, 1000).setVPDistance(1000).setThreadsCount(4).setadaptive(true).setNumberOfRays(289);
 
         scene.setAmbientLight(new AmbientLight(new Color(WHITE), new Double3(0.15))).setBackground(new Color(0,213,355));
 
