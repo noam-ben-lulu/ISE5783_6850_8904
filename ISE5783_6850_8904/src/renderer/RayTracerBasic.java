@@ -105,11 +105,12 @@ public class RayTracerBasic extends RayTracerBase {
                 if(reflectedPoint != null)
                     color = color.add(calcColor(reflectedPoint, reflectedRay, level - 1, kkr)
                             .scale(kr));
-
+                else
+                    color=color.add(scene.background).scale(kr);
 
             }
             else {
-                List<Ray> rays = raysGrid( new Ray(gp.point,reflectedRay.getDir(),n),-1,material.kG,n);
+                List<Ray> rays = GlossyGrid( new Ray(gp.point,reflectedRay.getDir(),n),-1,material.kG,n);
                 color = color.add(average_color_calculator(rays).scale(kr));
 
             }
@@ -121,35 +122,55 @@ public class RayTracerBasic extends RayTracerBase {
                 GeoPoint refractedPoint = findClosestIntersection(refractedRay);
                 if (refractedPoint != null) color =
                         color.add(calcColor(refractedPoint, refractedRay, level - 1, kkt).scale(kt));
+                else
+                    color=color.add(scene.background).scale(kt);
+
             }
             else
             {
-                List<Ray> rays = raysGrid(new Ray(gp.point, v, n),1,material.getkB(), n);
+                List<Ray> rays = GlossyGrid(new Ray(gp.point, v, n),1,material.getkB(), n);
                 color = color.add(average_color_calculator(rays).scale(kt));
             }
         }
 
         return color;
     }
-    public Color average_color_calculator(List<Ray> rays){
-        Color aver=Color.BLACK;
-        if (rays.size()==0)
+    /**
+     * Calculates the average color by tracing rays and finding the closest intersections.
+     *
+     * @param rays The list of rays to trace.
+     * @return The average color calculated from the intersected points.
+     */
+    public Color average_color_calculator(List<Ray> rays) {
+        Color aver = Color.BLACK;
+        if (rays.size() == 0)
             return aver;
-        for (Ray ray : rays){
+
+        for (Ray ray : rays) {
             GeoPoint point = findClosestIntersection(ray);
+
             // If no intersections are found, add the background color of the scene
             if (point == null)
-                aver= aver.add(scene.background) ;
-                // Calculates add returns the color of the point of intersection
-            else
-            {
-                Color c=calcColor(point,ray);
-                aver=aver.add(c);
+                aver = aver.add(scene.background);
+            else {
+                Color c = calcColor(point, ray);
+                aver = aver.add(c);
             }
         }
+
         return aver.reduce(new Double3(rays.size()));
     }
-    List<Ray> raysGrid(Ray ray, int direction, double glossy, Vector n) {
+
+    /**
+     * Generates a glossy grid of rays based on the provided parameters.
+     *
+     * @param ray        The original ray.
+     * @param direction  The direction of the grid (1 for refraction, -1 for reflection).
+     * @param glossy     The glossiness value.
+     * @param n          The normal vector.
+     * @return The list of rays in the glossy grid.
+     */
+    List<Ray> GlossyGrid(Ray ray, int direction, double glossy, Vector n) {
         int numOfRowCol = isZero(glossy) ? 1 : (int) Math.ceil(Math.sqrt(NUM_OF_RAYS));
         if (numOfRowCol == 1) {
             return List.of(ray);
@@ -195,10 +216,19 @@ public class RayTracerBasic extends RayTracerBase {
 
         return rays;
     }
-    public RayTracerBasic set_Glossy_promoted(double num_rays, double distanse,double size){
-        NUM_OF_RAYS=num_rays;
-        DISTANCE=distanse;
-        sizeGrid=size;
+
+    /**
+     * Sets the parameters for promoting glossy rays in the ray tracer.
+     *
+     * @param num_rays   The number of rays.
+     * @param distance   The distance parameter.
+     * @param size       The size of the grid.
+     * @return The updated RayTracerBasic object.
+     */
+    public RayTracerBasic set_Glossy_promoted(double num_rays, double distance, double size) {
+        NUM_OF_RAYS = num_rays;
+        DISTANCE = distance;
+        sizeGrid = size;
         return this;
     }
     /**

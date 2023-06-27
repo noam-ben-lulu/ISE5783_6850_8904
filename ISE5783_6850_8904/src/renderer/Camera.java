@@ -79,7 +79,7 @@ public class Camera {
         return this;
     }
     /**
-     * The function is color the image by construct rays to the fixel and calculus the color
+     * The function is color the image by construct rays to the pixel and calculus the color
      */
     public Camera renderImage() {
         if (this.rayTracer == null || this.imageWriter == null || this.width == 0 || this.height == 0 || this.distance == 0)
@@ -101,7 +101,7 @@ public class Camera {
             } else if (!adaptive) {//Anti-aliasing* improve is on
                 for (int i = 0; i < nY; i++) {
                     for (int j = 0; j < nX; j++) {
-                        Color color = rayTracer.traceBeamRay(constructRayBeam(j,i, imageWriter.getNx(),  imageWriter.getNy(), 17,17, height / imageWriter.getNy(), width / imageWriter.getNx()));
+                        Color color = rayTracer.average_color_calculator(constructRayBeam(j,i, imageWriter.getNx(),  imageWriter.getNy(), 17,17, height / imageWriter.getNy(), width / imageWriter.getNx()));
                         imageWriter.writePixel(i, j, color);
                     }
                 }
